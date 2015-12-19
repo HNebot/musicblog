@@ -26,8 +26,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </title>
     <?= $this->Html->meta('icon') ?>
 
-   <!-- <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('cake.css') ?> -->
+    <!-- <?= $this->Html->css('base.css') ?>-->
+    <!-- <?= $this->Html->css('cake.css') ?>-->
     <?= $this->Html->css('bootstrap.min') ?>
 
     <?= $this->fetch('meta') ?>
@@ -49,7 +49,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Music Blog</a>
+          <?= $this->Html->link('Music Blog', ['controller'=> 'Pages', 'action' => 'index'], 
+                array('class' => 'navbar-brand')) ?>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right">
@@ -75,17 +76,18 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
       </div>
     </div>
-
+    <?= $this->Flash->render() ?>
     <section class="container clearfix">
         <?= $this->fetch('content') ?>
     </section>
 
       <hr>
 
+    <div class="container">
       <footer>
         <p>&copy; 2015 Company, Inc.</p>
       </footer> <!-- /container -->
-
+    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

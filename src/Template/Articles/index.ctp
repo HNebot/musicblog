@@ -1,4 +1,12 @@
  <!-- Main jumbotron for a primary marketing message or call to action -->
+
+  <ul class="nav nav-pills">
+        <li role="presentation" ><?= $this->Html->link('Home', ['controller'=> 'Pages', 'action' => 'index']) ?></li>
+        <li role="presentation" class="active"><?= $this->Html->link('Articles', ['controller'=> 'Articles', 'action' => 'index']) ?></li>
+        <li role="presentation" ><?= $this->Html->link('Add Article', ['controller'=> 'Articles', 'action' => 'add']) ?></li>
+    </ul> 
+
+
 <hr class="featurette-divider">
 <?php $pos = 0 ?>
 <?php foreach ($articles as $article): ?>
