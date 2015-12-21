@@ -15,6 +15,10 @@ class ArticlesTable extends Table
         $this->displayField('title');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
+
+        $this->belongsTo('Categories', [
+            'foreignKey' => 'category_id',
+        ]);
     }
 
      public function validationDefault(Validator $validator)
@@ -26,6 +30,11 @@ class ArticlesTable extends Table
             ->requirePresence('body');
 
         return $validator;
+    }
+
+    public function isOwnedBy($articleId, $userId)
+    {
+        return $this->exists(['id' => $articleId, 'user_id' => $userId]);
     }
 }
 

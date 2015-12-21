@@ -36,10 +36,11 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     <?= $this->Html->script('bootstrap.min') ?>
     <?= $this->Html->script('holder.min') ?>
+    <?= $this->Html->script('jquery.confirm.min.js') ?>
+
 
 </head>
 <body>
-
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -54,14 +55,17 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-            <button type="button" class="btn btn-primary">New Loggin</button>
+            <?php if($user['username'] == null):?>
+              <?=$this->Html->link('Sign in', ['controller'=> 'Users', 'action' => 'add'], 
+                array('class' => 'btn btn-success'));?>
+
+              <?= $this->Html->link('Log in', ['controller'=> 'Users', 'action' => 'login'], 
+                array('class' => 'btn btn-primary')); ?>
+            <?php else: ?>
+            <?=$this->Html->link('Log out', ['controller'=> 'Users', 'action' => 'logout'], 
+                array('class' => 'btn btn-primary'));
+           endif; ?>
+
           </form>
         </div><!--/.navbar-collapse -->
       </div>
@@ -93,5 +97,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    
 </body>
 </html>

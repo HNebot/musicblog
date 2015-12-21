@@ -9,20 +9,27 @@ class ArticlesController extends AppController
         parent::initialize();
 
         $this->loadComponent('Flash'); // Include the FlashComponent
+        /*$user = $this->Auth->user();
+        $this->set(compact('user'));*/
     }
 
     public function index()
     {
         $articles = $this->Articles->find('all', [
     		'order' => ['Articles.created' => 'DESC']]);
+        $user = $this->Auth->user();
 
         $this->set(compact('articles'));
     }
 
     public function view($id = null)
     {
-        $article = $this->Articles->get($id);
+        //$article = $this->Articles->get($id);
+         $article = $this->Articles->get($id, [
+            'contain' => ['Categories']
+        ]);
         $this->set(compact('article'));
+        $this->set('_serialize', ['article']);
     }
 
     public function add()
@@ -37,6 +44,9 @@ class ArticlesController extends AppController
             $this->Flash->error(__('Unable to add your article.'));
         }
         $this->set('article', $article);
+
+        $categories = $this->Articles->Categories->find('treeList');
+        $this->set(compact('categories'));
     }
 
 
@@ -53,6 +63,9 @@ class ArticlesController extends AppController
         }
 
         $this->set('article', $article);
+
+        $categories = $this->Articles->Categories->find('treeList');
+        $this->set(compact('categories'));
     }
 
     public function delete($id)
@@ -61,8 +74,26 @@ class ArticlesController extends AppController
 
         $article = $this->Articles->get($id);
         if ($this->Articles->delete($article)) {
-            $this->Flash->success(__('The article with id: {0} has been deleted.', h($id), array('class'=>"alert alert-info", 'role'=>"alert")));
+            $this->Flash->success(__('The article with id: {0} has been deleted.', h($id)));
             return $this->redirect(['action' => 'index']);
+        }
     }
-}
+
+    public function isAuthorized($user)
+    {
+        // All registered users can add articles
+        if ($this->request->action === 'add') {
+            return true;
+        }
+
+        // The owner of an article can edit and delete it
+        if (in_array($this->request->action, ['edit', 'delete'])) {
+            $articleId = (int)$this->request->params['pass'][0];
+            if ($this->Articles->isOwnedBy($articleId, $user['id'])) {
+                return true;
+            }
+        }
+
+        return parent::isAuthorized($user);
+    }
 }
